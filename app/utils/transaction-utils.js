@@ -1,26 +1,11 @@
 // mongo connect
 const mongoose = require('mongoose');
 var options = { keepAlive: 1, useNewUrlParser: true };
-
+const prices = require('../constants/prices.constants');
 mongoose.connect('mongodb://localhost:27017/invoice_calculations', options);
 
 // import model
 const Transaction = require('../models/transaction.model');
-// pricing for different comapnies
-const unit_price_agr_1_20 = 0.99;
-const unit_price_agr_21_50 = 0.89;
-const unit_price_agr_51_100 = 0.79;
-const unit_price_agr_from_101 = 0.69;
-const unit_price_agr_all = 0.05;
-const unit_price_trd_1_500 = 0.09;
-const unit_price_trd_501_1000 = 0.08;
-const unit_price_trd_1001_2000 = 0.07;
-const unit_price_trd_2001_3000 = 0.06;
-const unit_price_trd_from_3001 = 0.05;
-const unit_price_abt_1_4000 = 0.19;
-const unit_price_abt_4001_8000 = 0.18;
-const unit_price_abt_8001_12000 = 0.17;
-const unit_price_abt_from_12001 = 0.16;
 const listTransactions = async () => {
   let pr = await Transaction.groupByCompaniesAndTypes().exec(
     async (err, res) => {
@@ -92,13 +77,14 @@ const listAntibAgr = async () => {
 // get the sell of trader
 const listSalesTrd = async () => {
   let tab = [];
+  console.log('===========+>', prices.unit_price_agr_1_20);
   let sa = await Transaction.getSalesOfTrd();
   sa.map(a => {
     tab.push(
       [a._id],
       a.total_ear_tags,
       a.earTagSum,
-      a.earTagSum * unit_price_trd_1_500
+      a.earTagSum * prices.unit_price_trd_1_500
     );
   });
   console.log(tab);
@@ -112,8 +98,8 @@ const listBuysTrd = async () => {
     tab.push(
       [a._id],
       a.total_ear_tags,
-      a.earTagSum,
-      a.earTagSum * unit_price_trd_1_500
+      a.earTagSum
+      // a.earTagSum * unit_price_trd_1_500
     );
   });
   console.log(tab);
