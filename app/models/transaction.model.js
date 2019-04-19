@@ -191,29 +191,6 @@ class TransactionClass {
     ]);
     return gbot;
   }
-  static getSalesOfAgrByDate() {
-    const gsoabd = Transaction.aggregate([
-      {
-        $match: {
-          businessType: '2',
-          transactionDate: {
-            createdAt: {
-              $gte: new Date(14, 4, 2019, 17, 50, 49.862).toISOString()
-            }
-          },
-          type: 'sell'
-        }
-      },
-      {
-        $group: {
-          _id: '$companyId',
-          total_ear_tags: { $addToSet: '$earTags.ear_tag' },
-          earTagSum: { $sum: { $size: '$earTags' } }
-        }
-      }
-    ]);
-    return gsoabd;
-  }
   //find company by business type== 1 agr
   static findByCompanyId1() {
     const fbci1 = Transaction.aggregate([
@@ -237,6 +214,23 @@ class TransactionClass {
       }
     ]);
     return fbci2;
+  }
+  //find company by business type== 1 trd grouped by date
+  static getCompanyDates() {
+    return this.aggregate([
+      { $match: { businessType: '1' } },
+      {
+        $group: {
+          _id: {
+            company_id: '$companyId',
+            updatedAt: '$updatedAt',
+            type: '$type'
+          },
+          total_ear_tags: { $addToSet: '$earTags.ear_tag' },
+          earTagSum: { $sum: { $size: '$earTags' } }
+        }
+      }
+    ]);
   }
 }
 

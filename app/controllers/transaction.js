@@ -7,7 +7,7 @@ const transaction_utils = require('../utils/transaction-utils');
 // pr;
 
 //get the list of sale agr
-let a = transaction_utils.listSalesTrd();
+let a = transaction_utils.listCompanyDates();
 a;
 // let b = transaction_utils.agrIds2();
 // b;

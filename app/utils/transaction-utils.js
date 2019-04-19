@@ -123,17 +123,16 @@ const agrIds2 = async () => {
   console.log(tab);
 };
 
-//get the list of agr sales by date
+//get the list of agr transactions by date
 
-const listSalesAgrbd = async () => {
+const listCompanyDates = async () => {
   let tab = [];
-  let sa = await Transaction.getSalesOfAgrByDate();
+  let sa = await Transaction.getCompanyDates();
   sa.map(a => {
-    tab.push([a._id], a.total_ear_tags, a.total_ear_tags.length);
+    tab.push(a._id, a.total_ear_tags, a.earTagSum);
   });
   console.log(tab);
 };
-
 module.exports = Object.assign(
   {},
   {
@@ -148,6 +147,6 @@ module.exports = Object.assign(
     listBuysTrd,
     agrIds1,
     agrIds2,
-    listSalesAgrbd
+    listCompanyDates
   }
 );
